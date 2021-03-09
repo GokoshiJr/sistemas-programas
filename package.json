@@ -1,0 +1,19 @@
+{
+  "name": "sistemas-programas",
+  "version": "1.0.0",
+  "description": "Sistema de control de inventario para la empresa Artesanos de la Pasta CA.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GokoshiJr/sistemas-programas.git"
+  },
+  "author": "Julio Gonzalez <julioagonzalez18@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GokoshiJr/sistemas-programas/issues"
+  },
+  "homepage": "https://github.com/GokoshiJr/sistemas-programas#readme"
+}
