@@ -5,7 +5,9 @@ const pool = mysql.createPool(database);
 
 pool.getConnection((err, conexi) => {
   if (err) {
-    console.log(`Error to Connect MySql \nCode: ${err.code} \nErrno: ${err.errno} \nSqlMessage: ${err.sqlMessage} \nSql State: ${err.sqlState}`);
+    console.log(
+      `Error to Connect MySql \nCode: ${err.code} \nErrno: ${err.errno} \nSqlMessage: ${err.sqlMessage} \nSql State: ${err.sqlState}`
+    );
     console.log(err);
   }
   if (conexi) {

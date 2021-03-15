@@ -11,13 +11,16 @@ const app = express();
 app.set("port", process.env.port || 3000);
 app.set("views", path.join(__dirname, "views"));
 // motor de plantilla
-app.engine(".hbs", exphbs({
-  defaultLayout: "main", // partes comunes de la navegacion
-  layoutsDir: path.join(app.get("views"), "layouts"), // donde estan los layouts viwes/layouts
-  partialsDir: path.join(app.get("views"), "partials"), // donde estan los partials views/partials
-  extname: ".hbs", // extension mas resumida
-  helpers: require("./lib/handlebars"), // para usar las funciones que estan en lib/
-}));
+app.engine(
+  ".hbs",
+  exphbs({
+    defaultLayout: "main", // partes comunes de la navegacion
+    layoutsDir: path.join(app.get("views"), "layouts"), // donde estan los layouts viwes/layouts
+    partialsDir: path.join(app.get("views"), "partials"), // donde estan los partials views/partials
+    extname: ".hbs", // extension mas resumida
+    helpers: require("./lib/handlebars"), // para usar las funciones que estan en lib/
+  })
+);
 app.set("view engine", ".hbs");
 
 // middlewares
@@ -37,7 +40,7 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.use("/", require("./routes/index"));
+app.use(require("./routes/index"));
 
 // public
 app.use("/public", express.static(path.join(__dirname, "public")));

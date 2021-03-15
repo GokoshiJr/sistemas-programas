@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "npx nodemon src/index.js",
-    "clean": "npx prettier --writte src/"
+    "clean": "npx prettier --write -u src/"
   },
   "repository": {
     "type": "git",
