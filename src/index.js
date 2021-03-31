@@ -21,6 +21,7 @@ app.engine(
     helpers: require("./lib/handlebars"), // para usar las funciones que estan en lib/
   })
 );
+// para usar el view engine que configuramos arriba, hbs
 app.set("view engine", ".hbs");
 
 // middlewares
@@ -40,10 +41,10 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.use(require("./routes/index"));
-app.use(require("./routes/users"));
+app.use("/", require("./routes/index"));
+app.use("/users", require("./routes/users"));
 
-// public
+// public - para usar archivos estaticos
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 // strating the server
