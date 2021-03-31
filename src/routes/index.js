@@ -9,13 +9,18 @@ router.get("/", async(req, res) => {
 router.get("/home", async (req, res) => {
 
   const rutas_home = [
-    {nombre: "Ruta1", ruta: "/#"},
-    {nombre: "Ruta2", ruta: "/#"},
-    {nombre: "Ruta3", ruta: "/#"},
+    {nombre: "About", ruta: "/#"},
+    {nombre: "Events", ruta: "/#"},
+    {nombre: "Info", ruta: "/#"},
     {nombre: "Ruta4", ruta: "/#"}
   ];
 
-  res.render("home", { rutas_home });
+  const ruta_login = {
+    nombre: "Login",
+    ruta: "/users/login"
+  };
+
+  res.render("home", { rutas_home, ruta_login });
 
   /* 
   const data = await pool.query("SELECT * FROM estatus");
@@ -23,6 +28,5 @@ router.get("/home", async (req, res) => {
   */
 
 });
-
 
 module.exports = router;
