@@ -1,19 +1,26 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/home">Home</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    {{#each rutas_home}}
+<nav class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+  <a class="navbar-brand active" href="/">Home</a>
+  <div class="navbar-nav-scroll">
+    <ul class="navbar-nav bd-navbar-nav flex-row">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href={{ruta}}>{{nombre}}</a>
-        </li>
+        {{#each rutas_home}}
+          <li class="nav-item">
+            <a class="nav-link active" href={{ruta}}>{{nombre}}</a>
+          </li>
+        {{/each}}
+        {{#with ruta_login}}
+          <li class="nav-item">
+            <a class="nav-link active" href={{ruta}}>{{nombre}}</a>
+          </li>
+        {{/with}}
       </ul>
-    {{/each}}
     </ul>
-    {{#with ruta_login}}
-      <a href="{{ruta}}" class="btn btn-outline-primary">{{nombre}}</a>
-    {{/with}}
   </div>
+  <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+    {{#each rutas_contacto}}
+      <li class="nav-item">
+        <a class="nav-link active p-2" href="{{ruta}}">{{nombre}}</a>
+      </li>
+    {{/each}}
+  </ul>
 </nav>

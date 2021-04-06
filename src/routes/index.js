@@ -9,10 +9,8 @@ router.get("/", async(req, res) => {
 router.get("/home", async (req, res) => {
 
   const rutas_home = [
-    {nombre: "About", ruta: "/#"},
-    {nombre: "Events", ruta: "/#"},
-    {nombre: "Info", ruta: "/#"},
-    {nombre: "Ruta4", ruta: "/#"}
+    {nombre: "Usuarios", ruta: "/users"},
+    {nombre: "Reglamento", ruta: "/#"},
   ];
 
   const ruta_login = {
@@ -20,12 +18,12 @@ router.get("/home", async (req, res) => {
     ruta: "/users/login"
   };
 
-  res.render("home", { rutas_home, ruta_login });
+  const rutas_contacto = [
+    {nombre: "twitter", ruta: "https://twitter.com/GokoshiJr"},
+    {nombre: "github", ruta: "https://github.com/GokoshiJr/sistemas-programas"}
+  ];
 
-  /* 
-  const data = await pool.query("SELECT * FROM estatus");
-  console.log(data); 
-  */
+  res.render("home", { rutas_home, ruta_login, rutas_contacto });
 
 });
 

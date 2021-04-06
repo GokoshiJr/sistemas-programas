@@ -3,6 +3,7 @@ const morgan = require("morgan"); // middleware
 const exphbs = require("express-handlebars"); // extension al motor de plantilla
 const { urlencoded } = require("express"); // recibir los datos del form html
 const path = require("path"); // nativo de node - para manejar ruta de archivos
+const flash = require("connect-flash"); // para enviar mensajes a las vistas
 
 // initializations
 const app = express();
@@ -28,6 +29,7 @@ app.set("view engine", ".hbs");
 app.use(morgan("dev"));
 app.use(urlencoded({ extended: false })); // urlencoded para recibir los datos de los formularios html, extended false (no imagenes)
 app.use(express.json()); // para enviar-recibir json
+app.use(flash()); // para enviar mensajes
 
 // global variables
 app.use((req, res, next) => {

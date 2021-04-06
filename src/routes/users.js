@@ -9,12 +9,73 @@ router.get("/login", async(req, res) => {
 
 // POST - users/login
 router.post("/login", async(req, res) => {
-  // Se comprueba con la base de datos, si falla deberiamos hacer en partials algo para los errores
-  const {email, password} = req.body;
+  /*
+    Falta hacer la autenticacion con passport
+  */
+});
 
-  console.log(`Email: ${email} \n Password: ${password}`);
+// GET - users
+router.get("/", async(req, res) => {
+  res.redirect("/users/request")
+});
 
-  res.send(`Email: ${email} \n Password: ${password}`);
+// GET - users/request
+router.get("/request", async(req, res) => {
+  const data = await pool.query(
+    "SELECT usuario_id, empleado_id, correo, clave, estatus.nombre AS estatus FROM usuarios " +
+    "INNER JOIN estatus ON estatus.estatus_id = usuarios.estatus_id WHERE usuarios.estatus_id = 1;"
+  );
+  res.render("users/request", { data });
+});
+
+// GET - users/create
+router.get("/create", async(req, res) => {
+  const data = await pool.query(
+    "SELECT empleados.nombre AS nombre, empleados.apellido AS apellido, usuarios.usuario_id AS usuario_id, " + 
+    "empleados.empleado_id AS empleado_id FROM empleados " +
+    "LEFT JOIN usuarios ON empleados.empleado_id = usuarios.empleado_id WHERE usuario_id IS NULL;"
+  );
+  res.render("users/create", { data });
+});
+
+// POST - users/create
+router.post("/create", async(req, res) => {
+  const { correo, clave, empleado_id } = req.body;
+  /*
+    Con el left join solo nos van aparecer los empleados que no tengan un 
+    usuario creado
+  */
+  await pool.query(
+    "INSERT INTO usuarios (empleado_id, correo, clave, fecha_registro, ultima_conexion, estatus_id) " +
+    "VALUES (?, ?, ?, ?, ?, ?);", [empleado_id, correo, clave, new Date(), new Date(), 1]
+  );
+  res.redirect("/users");
+});
+
+// GET - users/update
+router.get("/update/:id", async(req, res) => {
+  let { id } = req.params;
+  data = await pool.query(
+    "SELECT * FROM usuarios WHERE usuario_id = ?;", [id]
+  );
+  res.render("users/update", { data });
+});
+
+router.post("/update/:id", async(req, res) => {
+  const { correo, clave } = req.body;
+  const { id } = req.params;
+  await pool.query(
+    "UPDATE usuarios SET correo = ?, clave = ? WHERE usuario_id = ?;", [correo, clave, id]
+  );
+  res.redirect("/users")
+});
+
+router.get("/delete/:id", async(req, res) => {
+  let { id } = req.params;
+  await pool.query(
+    "UPDATE usuarios SET estatus_id = ? WHERE usuario_id = ?;", [2, id]
+  );
+  res.redirect("/users");
 });
 
 module.exports = router;
