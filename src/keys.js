@@ -2,9 +2,9 @@ module.exports = {
   // coloque sus datos correspondientes a su servicio de MySQL
   database: {
     host: "localhost",
-    database: "inventario",
+    database: "db_sistema",
     user: "root",
-    password: "$R5t6u8.",
-    port: 4000,
+    password: "Primitivo202101",
+    port: 3306,
   },
 };

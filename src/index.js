@@ -4,7 +4,7 @@ const exphbs = require("express-handlebars"); // extension al motor de plantilla
 const { urlencoded } = require("express"); // recibir los datos del form html
 const path = require("path"); // nativo de node - para manejar ruta de archivos
 const flash = require("connect-flash"); // para enviar mensajes a las vistas
-
+const session = require("express-session")
 // initializations
 const app = express();
 
@@ -25,6 +25,13 @@ app.engine(
 // para usar el view engine que configuramos arriba, hbs
 app.set("view engine", ".hbs");
 
+// config express session
+app.use(session({ // config de la sesion
+  secret: "session", // nombre
+  resave: false, // para que no se renueve
+  saveUninitialized: false, // para que no se vuelva a establecer
+  //store: new MySQLStore(database) // donde guardar la sesion
+}));
 // middlewares
 app.use(morgan("dev"));
 app.use(urlencoded({ extended: false })); // urlencoded para recibir los datos de los formularios html, extended false (no imagenes)
@@ -45,6 +52,7 @@ app.use((req, res, next) => {
 // routes
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
+app.use("/supervisor", require("./routes/supervisor"));
 
 // public - para usar archivos estaticos
 app.use("/public", express.static(path.join(__dirname, "public")));

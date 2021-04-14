@@ -9,9 +9,28 @@ router.get("/login", async(req, res) => {
 
 // POST - users/login
 router.post("/login", async(req, res) => {
-  /*
-    Falta hacer la autenticacion con passport
-  */
+  const {email,password} = req.body;
+  const errors = [];
+  const dato = await pool.query('Select `correo` as correo,`clave` as clave, `empleado_id` as empleado_id  from `usuarios` where `correo` =? AND `clave`= ?', [email,password]);
+  console.log(dato)
+  
+  if(dato[0] == null){
+      errors.push('No Coincidencias')
+      res.render('users/login',{errors})
+  }else{
+    req.session.user_id = dato[0].empleado_id;
+    data =  await pool.query("SELECT cargo_id as cargo_id, almacen_id as almacen_id FROM empleados WHERE empleado_id = ? ", [req.session.user_id])
+    req.session.cargo_id = data[0].cargo_id;
+    req.session.almacen_id = data[0].almacen_id;
+    
+    if(req.session.cargo_id === 3){
+      res.redirect("/almacenista");
+    }else if(req.session.cargo_id === 2){
+      res.redirect("/supervisor");
+    }else{
+      res.redirect("/administrador");
+    }
+  }
 });
 
 // GET - users
@@ -22,8 +41,10 @@ router.get("/", async(req, res) => {
 // GET - users/request
 router.get("/request", async(req, res) => {
   const data = await pool.query(
-    "SELECT usuario_id, empleado_id, correo, clave, estatus.nombre AS estatus FROM usuarios " +
-    "INNER JOIN estatus ON estatus.estatus_id = usuarios.estatus_id WHERE usuarios.estatus_id = 1;"
+    "SELECT usuario_id, empleados.empleado_id, correo, clave, estatus.nombre AS estatus, almacen.sector as sector FROM usuarios "+
+    "INNER JOIN estatus ON estatus.estatus_id = usuarios.estatus_id "+
+    "INNER JOIN empleados ON empleados.empleado_id = usuarios.empleado_id "+
+   "INNER JOIN almacen ON almacen.almacen_id = empleados.almacen_id WHERE (usuarios.estatus_id = 1) "
   );
   res.render("users/request", { data });
 });
