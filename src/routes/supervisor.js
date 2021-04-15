@@ -3,18 +3,20 @@ const router = express.Router();
 const pool = require("../database");
 
 router.get('/', async(req, res)=>{
+
   if (req.session.user_logeado) {
-    console.log(req.session)
-    const productos = await pool.query("SELECT codigo, productos.nombre as producto, cantidad, tipoproductos.nombre as tipoproducto "+
+    const productos = await pool.query("SELECT producto_id, codigo, productos.nombre as producto, cantidad, tipoproductos.nombre as tipoproducto "+
     "FROM productos INNER JOIN tipoproductos ON productos.tipoproducto_id =  tipoproductos.tipoproducto_id "+
     "where almacen_id = ?", [req.session.almacen_id]);
     productos.forEach(element => {
-      if(element.cantidad == 2){
+      if(element.cantidad == 0){
         element.cantidad = null;
       }  
     });
-    const instrucciones = await pool.query("SELECT * FROM instrucciones");
-    const empleado = await pool.query("SELECT * FROM empleados where empleado_id = ?",[req.session.user_id]);
+    
+    const instrucciones = await pool.query("SELECT * FROM tipoinstrucciones");
+    const empleado = await pool.query("SELECT nombre, apellido, fecha_nacimiento ,cedula ,telefono, a.sector as almacen FROM empleados INNER JOIN almacenes as a"+
+     " ON a.almacen_id = empleados.almacen_id where empleado_id = ?",[req.session.user_id]);
     const conexiones = await pool.query("SELECT *  FROM usuarios where empleado_id = ?", [req.session.user_id]);
     
     console.log(empleado[0].fecha_nacimiento)
@@ -25,7 +27,12 @@ router.get('/', async(req, res)=>{
 });
 
 router.post('/',(req,res)=>{
-  const datos_instruccion = req.body;
-  //enviar instrucciones (redirect)
+  const data = req.body;
+  console.log(data);
+  console.log(req.session)
+  pool.query("INSERT INTO instrucciones values(NULL,?,?,?,?,?)",[parseInt(data.tipoinstruccion_id),
+  parseInt(data.producto_id), parseInt(data.cant), data.espec, req.session.almacen_id]);
+
+  res.redirect('/supervisor')
 })
 module.exports = router;
