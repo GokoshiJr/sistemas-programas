@@ -51,7 +51,9 @@ app.use((req, res, next) => {
 
 // routes
 app.use("/", require("./routes/index"));
+app.use("/logout", require("./routes/logout"));
 app.use("/users", require("./routes/users"));
+app.use("/administrador", require("./routes/administrador"));
 app.use("/supervisor", require("./routes/supervisor"));
 
 // public - para usar archivos estaticos
