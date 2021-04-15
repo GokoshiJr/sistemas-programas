@@ -23,10 +23,11 @@ router.get("/home", async (req, res) => {
   if (req.session.user_logeado === true && req.session.cargo_id === 1) {
     // cargo_id == 1 (Administrador)
     rutas_home = [
-      {nombre: "About", ruta: "/#"},
+      {nombre: "Instrucciones", ruta: "/instrucciones"},
       {nombre: "Reglamento", ruta: "/#"},
       {nombre: "Vista General", ruta: "/administrador"},
-      {ruta: "/logout", nombre: "Salir"}
+      {nombre: "Salir", ruta: "/logout"},
+      {nombre: "Salir", ruta: "/logout"},
     ];
     // Vaciamos la ruta de login porque ya esta logeado el usuario
     ruta_login = {};
