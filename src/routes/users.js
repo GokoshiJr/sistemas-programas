@@ -2,38 +2,43 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../database");
 
-// GET - users/login
 router.get("/login", async(req, res) => {
-  res.render("users/login"); // views/users/login.hbs
+  res.render("users/login");
 });
 
-// POST - users/login
 router.post("/login", async(req, res) => {
-  const {email,password} = req.body;
+
+  const { email, password} = req.body;
   const errors = [];
-  const dato = await pool.query('Select `correo` as correo,`clave` as clave, `empleado_id` as empleado_id  from `usuarios` where `correo` =? AND `clave`= ?', [email,password]);
-  console.log(dato)
+  const dato = await pool.query(
+    'Select correo, clave, empleado_id from usuarios where correo = ? AND clave = ?', [ email, password ]
+  );
   
-  if(dato[0] == null){
-      errors.push('No Coincidencias')
-      res.render('users/login',{errors})
-  }else{
+  if (dato[0] == null) {
+    errors.push('No Coincidencias')
+    res.render('users/login', {errors})
+  } else {
+
     req.session.user_id = dato[0].empleado_id;
-    data =  await pool.query("SELECT cargo_id as cargo_id, almacen_id as almacen_id FROM empleados WHERE empleado_id = ? ", [req.session.user_id])
+    data =  await pool.query(
+      "SELECT cargo_id, almacen_id FROM empleados WHERE empleado_id = ? ", [req.session.user_id]
+    );
+
     req.session.cargo_id = data[0].cargo_id;
     req.session.almacen_id = data[0].almacen_id;
-    
-    if(req.session.cargo_id === 3){
+    req.session.user_logeado = true;
+
+    if (req.session.cargo_id === 3) {
       res.redirect("/almacenista");
-    }else if(req.session.cargo_id === 2){
+    } else if (req.session.cargo_id === 2) {
       res.redirect("/supervisor");
-    }else{
+    } else {
       res.redirect("/administrador");
     }
+
   }
 });
 
-// GET - users
 router.get("/", async(req, res) => {
   res.redirect("/users/request")
 });

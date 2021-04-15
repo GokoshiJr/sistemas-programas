@@ -8,12 +8,9 @@ router.get("/", async(req, res) => {
 
 router.get("/home", async (req, res) => {
 
-  const rutas_home = [
-    {nombre: "Usuarios", ruta: "/users"},
-    {nombre: "Reglamento", ruta: "/#"},
-  ];
+  let rutas_home = [];
 
-  const ruta_login = {
+  let ruta_login = {
     nombre: "Login",
     ruta: "/users/login"
   };
@@ -22,6 +19,18 @@ router.get("/home", async (req, res) => {
     {nombre: "twitter", ruta: "https://twitter.com/GokoshiJr"},
     {nombre: "github", ruta: "https://github.com/GokoshiJr/sistemas-programas"}
   ];
+
+  if (req.session.user_logeado === true && req.session.cargo_id === 1) {
+    // cargo_id == 1 (Administrador)
+    rutas_home = [
+      {nombre: "About", ruta: "/#"},
+      {nombre: "Reglamento", ruta: "/#"},
+      {nombre: "Vista General", ruta: "/administrador"},
+      {ruta: "/logout", nombre: "Salir"}
+    ];
+    // Vaciamos la ruta de login porque ya esta logeado el usuario
+    ruta_login = {};
+  }
 
   res.render("home", { rutas_home, ruta_login, rutas_contacto });
 
