@@ -5,3 +5,8 @@
 nav {
   background-color: black;
 }
+.table-wrapper {
+  max-height: 450px;
+  overflow: auto;
+  display:inline-block;
+}
