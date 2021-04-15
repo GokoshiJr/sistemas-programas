@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `db_sistema`.`usuarios` (
   `correo` VARCHAR(100) NOT NULL,
   `clave` VARCHAR(100) NOT NULL,
   `fecha_registro` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `ultima_conexion` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `ultima_conexion` TIMESTAMP NOT NULL,
   `estatus_id` INT(1) UNSIGNED NOT NULL,
   PRIMARY KEY (`usuario_id`),
   INDEX `usuarios_empleados_fk` (`empleado_id` ASC),
