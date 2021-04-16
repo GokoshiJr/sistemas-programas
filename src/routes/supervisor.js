@@ -8,6 +8,7 @@ router.get('/', async(req, res)=>{
     const productos = await pool.query("SELECT producto_id, codigo, productos.nombre as producto, cantidad, tipoproductos.nombre as tipoproducto "+
     "FROM productos INNER JOIN tipoproductos ON productos.tipoproducto_id =  tipoproductos.tipoproducto_id "+
     "where almacen_id = ?", [req.session.almacen_id]);
+
     productos.forEach(element => {
       if(element.cantidad == 0){
         element.cantidad = null;
@@ -19,7 +20,6 @@ router.get('/', async(req, res)=>{
      " ON a.almacen_id = empleados.almacen_id where empleado_id = ?",[req.session.user_id]);
     const conexiones = await pool.query("SELECT *  FROM usuarios where empleado_id = ?", [req.session.user_id]);
     
-    console.log(empleado[0].fecha_nacimiento)
     res.render('supervisor/supervisor',{productos,instrucciones, empleado,conexiones})
   } else {
     res.redirect("/home")
@@ -28,11 +28,11 @@ router.get('/', async(req, res)=>{
 
 router.post('/',(req,res)=>{
   const data = req.body;
-  console.log(data);
-  console.log(req.session)
-  pool.query("INSERT INTO instrucciones values(NULL,?,?,?,?,?)",[parseInt(data.tipoinstruccion_id),
-  parseInt(data.producto_id), parseInt(data.cant), data.espec, req.session.almacen_id]);
 
+  pool.query("INSERT INTO instrucciones values(NULL,?,?,?,?,?,5)",[parseInt(data.tipoinstruccion_id),
+  parseInt(data.producto_id), parseInt(data.cant), data.espec, req.session.almacen_id]);
+  
+  req.flash('success', "Intruccion enviada satisfactoriamente")
   res.redirect('/supervisor')
 })
 module.exports = router;
