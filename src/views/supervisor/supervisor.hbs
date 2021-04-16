@@ -25,13 +25,14 @@
                         Almacen: {{almacen}}
                     </li>
                 </ul>
-                {{/each}}
+                
             </div>
         </div>
         <div class="card mt-2">
             <div class="card-header text-center">
-                Inventario
+                <b><h4>Inventario de Almacen {{almacen}}</h4></b>
             </div>
+            {{/each}}
             <div class="card-body">
                 <table class="table text-center table-striped table-hover table-wrapper table-responsive">
                     <thead class="thead-dark">
@@ -61,7 +62,7 @@
     <div class="col">
         <div class="card my-2 position-fixed mx-auto">
             <div class="card-header text-center">
-                Intruccion
+                <b><h4>Intruccion</h4></b>
             </div>
             <div class="card-body">
                 <form action="/supervisor" method="POST">
