@@ -5,7 +5,7 @@ const helpers = require("../lib/handlebars");
 
 router.get('/', async (req, res) => {
 
-  if (req.session.user_logeado === true) {
+  if (req.session.user_logeado === true && req.session.cargo_id === 1) {
 
     const rutas_home = [  
       {nombre: "Salir", ruta: "/logout"},
@@ -80,18 +80,22 @@ router.get('/', async (req, res) => {
 });
 
 router.post("/autorizar/:id", async(req, res) => {
-  await pool.query(
-    "UPDATE instrucciones SET estatusinstruccion_id = 1 WHERE instruccion_id = ?", [req.params.id]
-  );
-  req.flash("success", "Tarea autorizada con éxito");
+  if (req.session.user_logeado === true && req.session.cargo_id === 1) {
+    await pool.query(
+      "UPDATE instrucciones SET estatusinstruccion_id = 1 WHERE instruccion_id = ?", [req.params.id]
+    );
+    req.flash("success", "Tarea autorizada con éxito");
+  }
   res.redirect("/administrador");
 });
 
-router.post("/denegar/:id", async(req, res) => {  
-  await pool.query(
-    "UPDATE instrucciones SET estatusinstruccion_id = 2 WHERE instruccion_id = ?", [req.params.id]
-  );
-  req.flash("success", "Tarea denegada con éxito");
+router.post("/denegar/:id", async(req, res) => { 
+  if (req.session.user_logeado === true && req.session.cargo_id === 1) {
+    await pool.query(
+      "UPDATE instrucciones SET estatusinstruccion_id = 2 WHERE instruccion_id = ?", [req.params.id]
+    );
+    req.flash("success", "Tarea denegada con éxito");
+  }
   res.redirect("/administrador");
 });
 

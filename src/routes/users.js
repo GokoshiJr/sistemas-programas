@@ -32,7 +32,7 @@ router.post("/login", async(req, res) => {
       res.redirect("/almacenista");
     } else if (req.session.cargo_id === 2) {
       res.redirect("/supervisor");
-    } else {  
+    } else if (req.session.cargo_id === 1) {  
       const test = await pool.query(
         'Select empleados.nombre, empleados.apellido, usuarios.ultima_conexion FROM usuarios, empleados WHERE empleados.empleado_id = ?', [ req.session.user_id ]
       );
