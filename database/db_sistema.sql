@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:4000
--- Generation Time: Apr 16, 2021 at 03:31 PM
+-- Generation Time: Apr 16, 2021 at 07:24 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.19
 
@@ -105,8 +105,7 @@ CREATE TABLE `estatusinstrucciones` (
 INSERT INTO `estatusinstrucciones` (`estatusinstruccion_id`, `nombre`) VALUES
 (1, 'Autorizada'),
 (2, 'No Autorizada'),
-(3, 'Realizada'),
-(4, 'No Realizada');
+(5, 'Revision');
 
 -- --------------------------------------------------------
 
@@ -129,8 +128,8 @@ CREATE TABLE `instrucciones` (
 --
 
 INSERT INTO `instrucciones` (`instruccion_id`, `tipoinstruccion_id`, `producto_id`, `cantidad_producto`, `especificacion`, `almacen_id`, `estatusinstruccion_id`) VALUES
-(1, 1, 5, 5, 'Ingresaron 5 kilos de albahaca del mercado municipal', 1, 1),
-(2, 2, 20, 4, 'Ajuste de cafe para el pana Marcel que quiere tomarlo en las mañanas', 2, 1);
+(1, 1, 5, 5, 'Ingresaron 5 kilos de albahaca del mercado municipal', 1, 5),
+(2, 2, 20, 4, 'Ajuste de cafe para el pana Marcel que quiere tomarlo en las mañanas', 2, 5);
 
 -- --------------------------------------------------------
 
@@ -275,7 +274,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`usuario_id`, `empleado_id`, `correo`, `clave`, `ultima_conexion`) VALUES
-(1, 1, 'julioagonzalez18@gmail.com', '123', '2021-04-16 15:26:06'),
+(1, 1, 'julioagonzalez18@gmail.com', '123', '2021-04-16 19:20:58'),
 (2, 2, 'marcel202101@gmail.com', 'ABC', '2021-04-16 04:01:30');
 
 --
@@ -386,7 +385,7 @@ ALTER TABLE `empleados`
 -- AUTO_INCREMENT for table `estatusinstrucciones`
 --
 ALTER TABLE `estatusinstrucciones`
-  MODIFY `estatusinstruccion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `estatusinstruccion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `instrucciones`
