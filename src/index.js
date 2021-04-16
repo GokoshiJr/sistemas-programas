@@ -46,6 +46,8 @@ app.use((req, res, next) => {
     res, toma lo que el servidor quiere responder
     next, una funcion para continuar con el resto del codigo
   */
+ app.locals.success = req.flash("success"); // mensaje success "alert"
+  app.locals.danger = req.flash("danger");
   next();
 });
 
