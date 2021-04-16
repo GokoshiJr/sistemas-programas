@@ -14,7 +14,7 @@ router.post("/login", async(req, res) => {
   );
   
   if (dato[0] == null) {
-    req.flash("danger", "Correo o contrasena erronea")
+    req.flash("danger", "Datos invalidos")
     res.render('users/login',req.session.flash);
   } else {
 
