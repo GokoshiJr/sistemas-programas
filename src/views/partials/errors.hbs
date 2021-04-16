@@ -1,10 +1,10 @@
-{{#each errors}}
+{{#if success}}
 <div class = "row mt-2 ">
     <div class = "col-m-2 mx-auto">
-    <div class="alert alert-dark alert-dismissible my-auto mx-auto">
+    <div class="alert alert-success alert-dismissible my-auto mx-auto">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        {{this}}
+        {{success}}
     </div>
     </div>
 </div>
-{{/each}}
+{{/if}}

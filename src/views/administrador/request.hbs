@@ -1,80 +1,109 @@
-<div class="container mt-2">
-
+<div class="container-fluid">
   <div class="row">
-    
-    <div class="col-8" style="{{!-- border: 1px solid black; --}}">
-      <div class="card" style="width: 100%;">
-        <div class="card-header text-center">
-          Inventario Almacen Norte
+    <div class="col-lg-8 col-md-8 col-sm-12 mt-3">
+      <div class="card border-light">
+        <div class="card-header bg-light text-center">
+          <b><h4>Inventario Almacen Norte</h4></b>
         </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Vestibulum at eros</li>
-        </ul>
+        <table class="table text-center table-striped table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th>Código</th>
+              <th>Producto</th>
+              <th>Cantidad de Lotes</th>
+            </tr>
+          </thead>
+          {{#each productos}}
+            <tr>
+              <td>{{codigo}}</td>
+              <td>{{nombre}}</td>
+              {{#if cantidad}}
+                  <td>{{cantidad}}</td>
+              {{else}}
+                  <td>No hay en stock</td>
+              {{/if}}
+            </tr>
+          {{/each}}
+        </table>
       </div>
     </div>
-
-    <div class="col-4" style="{{!-- border: 1px solid black; --}}">
-      <div class="card" style="width: 100%;">
-        <div class="card-header text-center">
-          Tareas del Almacen Norte por Autorizar
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Vestibulum at eros</li>
-        </ul>
+    <div class="col-lg-4 col-md-4 col-sm-12 mt-3">
+      <div class="card-header text-center">
+        Tareas del Almacen Norte por Autorizar
       </div>
+        {{#each instrucciones}}
+          <div class="card border-light">
+            <h5 class="card-header text-white bg-primary">{{tipo}}</h5>
+            <div class="card-body">
+              <h5 class="card-title">{{producto}}</h5>
+              <p class="card-text">{{especificacion}}.</p>
+              <input type="checkbox" class="form-check-input ml-1" id="exampleCheck1">
+              <label class="form-check-label ml-4" for="exampleCheck1">Autorizar</label>
+            </div>
+          </div>
+        {{/each}}
+        <button class="btn btn-outline-dark">Enviar Autorizaciones</button>
     </div>
-
-  </div>
-
-  <div class="row mt-3">
-    
-    <div class="col-8" style="{{!-- border: 1px solid black; --}}">
-      <div class="card" style="width: 100%;">
-        <div class="card-header text-center">
-          Inventario Almacen Sur
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Vestibulum at eros</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="col-4" style="{{!-- border: 1px solid black; --}}">
-      <div class="card" style="width: 100%;">
-        <div class="card-header text-center">
-          Tareas del Almacen Sur por Autorizar
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Vestibulum at eros</li>
-        </ul>
-      </div>
-    </div>    
-
-  </div>
-
-  <div class="row mt-3">
-    
-    <div class="col-12" style="{{!-- border: 1px solid black; --}}">
-      <div class="card" style="width: 100%;">
-        <div class="card-header text-center">
-          Registro de Movimientos
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Vestibulum at eros</li>
-        </ul>
-      </div>
-    </div>
-    
   </div>
   
+  <div class="row">
+    <div class="col-lg-8 col-md-8 col-sm-12 mt-3">
+      <div class="card border-light">
+        <div class="card-header bg-light text-center">
+          <b><h4>Inventario Almacen Sur</h4></b>
+        </div>
+        <table class="table text-center table-striped table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th>Código</th>
+              <th>Producto</th>
+              <th>Cantidad de Lotes</th>
+            </tr>
+          </thead>
+          {{#each productos}}
+            <tr>
+              <td>{{codigo}}</td>
+              <td>{{nombre}}</td>
+              {{#if cantidad}}
+                  <td>{{cantidad}}</td>
+              {{else}}
+                  <td>No hay en stock</td>
+              {{/if}}
+            </tr>
+          {{/each}}
+        </table>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12 mt-3">
+      <div class="card-header text-center">
+        Tareas del Almacen Sur por Autorizar
+      </div>
+        {{#each instrucciones}}
+          <div class="card border-light">
+            <h5 class="card-header text-white bg-primary">{{tipo}}</h5>
+            <div class="card-body">
+              <h5 class="card-title">{{producto}}</h5>
+              <p class="card-text">{{especificacion}}.</p>
+              <input type="checkbox" class="form-check-input ml-1" id="exampleCheck1">
+              <label class="form-check-label ml-4" for="exampleCheck1">Autorizar</label>
+            </div>
+          </div>
+        {{/each}}
+        <button class="btn btn-outline-dark">Enviar Autorizaciones</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col mt-3">
+      <div class="card border-light">
+        <div class="card-header bg-light text-center">
+          <b>Inventario Almacen Norte</b>
+        </div>
+        <div class="card-body">
+          test
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
