@@ -1,50 +1,65 @@
 <div class="row justify-content-start ">
  <!-- Imagen y datos del usuario -->
-    <div class="col-sm-3  ">
-        <!--<img class = "card-img img-fluid" src="./../../public/img/logo.png" alt="img" >-->
-    </div>
-    <div class="col-7">
-        <div class="card">
-            
-            {{#each empleado}}
-                Usuario: {{nombre}} {{apellido}}
-                Fecha de Nacimiento: {{fecha_nacimiento}}
-                Cedula: {{cedula}}
-                Telefono: {{telefono}}
-            {{/each}}
-        
+    <div class="col-7 m-1">
+        <div class="card flex-row">
+            <div class="card-header">
+                <img  src="http://assets.stickpng.com/thumbs/585e4be1cb11b227491c3398.png" width="200px" height="200px" class = "rounded my-auto d-block" >
+            </div>
+            <div class="card-body">
+                <div class="card-header text-center">Datos de Usuario</div>
+                {{#each empleado}}
+                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        Usuario: {{nombre}} {{apellido}}
+                    </li>
+                    <li class="list-group-item"> 
+                        Fecha de Nacimiento: {{fecha_nacimiento}}
+                    </li>
+                    <li class="list-group-item"> 
+                        Cedula: {{cedula}}
+                    </li>
+                    <li class="list-group-item"> 
+                        Telefono: {{telefono}}
+                    </li>
+                    <li class="list-group-item"> 
+                        Almacen: {{almacen}}
+                    </li>
+                </ul>
+                {{/each}}
+            </div>
         </div>
-    </div>
-</div>
-<div class="row justify-content-center mt-2">
-    <div class="col-7">
-      <div class="card">
-          <table class="table text-center">
-              <thead class="thead-dark">
-                <tr>
-                    <th>Codigo</th>
-                    <th>Producto</th>
-                    <th>Cantidad de Lotes</th>
-                    <th>Tipo de Producto</th>
-                </tr>
-              </thead>
-              {{#each productos}}
-                <tr>
-                    <td>{{codigo}}</td>
-                    <td>{{producto}}</td>
-                    {{#if cantidad}}
-                        <td>{{cantidad}}</td>
-                    {{else}}
-                        <td>No hay en stock</td>
-                    {{/if}}
-                    <td>{{tipoproducto}}</td>
-                </tr>
-              {{/each}}
-          </table>
+        <div class="card mt-2">
+            <div class="card-header text-center">
+                Inventario
+            </div>
+            <div class="card-body">
+                <table class="table text-center table-striped table-hover table-wrapper table-responsive">
+                    <thead class="thead-dark">
+                      <tr>
+                          <th>Codigo</th>
+                          <th>Producto</th>
+                          <th>Cantidad de Lotes</th>
+                          <th>Tipo de Producto</th>
+                      </tr>
+                    </thead>
+                    {{#each productos}}
+                      <tr>
+                          <td>{{codigo}}</td>
+                          <td>{{producto}}</td>
+                          {{#if cantidad}}
+                              <td>{{cantidad}}</td>
+                          {{else}}
+                              <td>No hay en stock</td>
+                          {{/if}}
+                          <td>{{tipoproducto}}</td>
+                      </tr>
+                    {{/each}}
+                </table>
+            </div>
       </div>  
     </div>
-    <div class="col-4 ">
-        <div class="card position-fixed mx-auto">
+    <div class="col">
+        <div class="card my-2 position-fixed mx-auto">
             <div class="card-header text-center">
                 Intruccion
             </div>
@@ -55,7 +70,7 @@
                             <select id = "select_instruccion_id"class="form-control" required>
                                 <option disabled selected>Tipo de Instruccion</option>
                                 {{#each instrucciones}}
-                                    <option value="{{instruccion_id}}">{{nombre}}</option>
+                                    <option value="{{tipoinstruccion_id}}">{{nombre}}</option>
                                 {{/each}}
                             </select>
                         </li>
@@ -63,15 +78,15 @@
                             <select id = "select_codigoproducto_id"class="form-control" required>
                                 <option disabled selected>Codigo de producto</option>
                                 {{#each productos}} 
-                                    <option value="{{codigo}}">{{codigo}} {{producto}}</option>
+                                    <option value="{{producto_id}}">{{codigo}} {{producto}}</option>
                                 {{/each}} 
                             </select>
                         </li>
                         <li class="list-group-item">Cantidad: <input class="form-control input-sm " name= 'cant' type="number" size = '10' placeholder = 'Cantidad' required></li>
                         <li class="list-group-item">Especificacion:<textarea name = 'espec'class="form-control" type="text" placeholder="Especificacion de Instruccion" required></textarea></li>
                     </ul>
-                    <input type="hidden" id = 'codigo_producto'name="codigo_producto" value="select_producto">
-                    <input type="hidden" id = 'instruccion_id'name="instruccion_id" value="select_instruccion">
+                    <input type="hidden" id = 'codigo_producto' name="producto_id" value="select_producto">  
+                    <input type="hidden" id = 'instruccion_id'name="tipoinstruccion_id" value="select_instruccion">
                     <button class="btn btn-success" onclick="valueSelect()" type="submit"> Enviar Instruccion</button>
                 </form>
             </div>
@@ -83,9 +98,10 @@
         let select_instruccion = document.getElementById("select_instruccion_id").value;
         let select_producto = document.getElementById("select_codigoproducto_id").value;
 
-        let enviar_codigo_producto = document.getElementById("codigo_producto")
-        enviar_codigo_producto.value = select_producto
-        let enviar_instruccion_id = document.getElementById("instruccion_id")
-        enviar_instruccion_id.value = select_instruccion
+        let enviar_codigo_producto = document.getElementById("codigo_producto");
+        let enviar_instruccion_id = document.getElementById("instruccion_id");
+
+        enviar_instruccion_id.value = select_instruccion;
+        enviar_codigo_producto.value = select_producto;
     }
 </script>
