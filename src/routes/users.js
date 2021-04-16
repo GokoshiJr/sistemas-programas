@@ -23,21 +23,19 @@ router.post("/login", async(req, res) => {
     data =  await pool.query(
       "SELECT cargo_id, almacen_id FROM empleados WHERE empleado_id = ? ", [req.session.user_id]
     );
-
+    const test = await pool.query(
+      'Select empleados.nombre, empleados.apellido, usuarios.ultima_conexion FROM usuarios, empleados WHERE empleados.empleado_id = ?', [ req.session.user_id ]
+    );
     req.session.cargo_id = data[0].cargo_id;
     req.session.almacen_id = data[0].almacen_id;
     req.session.user_logeado = true;
     
+    req.flash("success", `Bienvenido ${test[1].nombre} ${test[1].apellido}, última conexión fue ${test[1].ultima_conexion}`);
     if (req.session.cargo_id === 3) {
       res.redirect("/almacenista");
     } else if (req.session.cargo_id === 2) {
       res.redirect("/supervisor");
     } else {  
-      const test = await pool.query(
-        'Select empleados.nombre, empleados.apellido, usuarios.ultima_conexion FROM usuarios, empleados WHERE empleados.empleado_id = ?', [ req.session.user_id ]
-      );
-      console.log(test)
-      req.flash("success", `Bienvenido ${test[1].nombre} ${test[1].apellido}, última conexión fue ${test[1].ultima_conexion}`);
       res.redirect("/administrador");
       await pool.query(
         "UPDATE usuarios SET ultima_conexion = NOW() WHERE usuario_id = ?", [ req.session.user_id ]
