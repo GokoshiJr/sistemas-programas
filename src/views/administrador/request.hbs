@@ -1,107 +1,153 @@
-<div class="container-fluid">
-  <div class="row">
+<div class="container">
+  
+  {{!-- Row de los datos del almacen Norte --}}
+  <div class="row m-1"> 
     <div class="col-lg-8 col-md-8 col-sm-12 mt-3">
       <div class="card border-light">
-        <div class="card-header bg-light text-center">
-          <b><h4>Inventario Almacen Norte</h4></b>
+        <div class="card-header text-center">
+          Inventario del Almacen Norte
         </div>
-        <table class="table text-center table-striped table-hover">
-          <thead class="thead-dark">
-            <tr>
-              <th>Código</th>
-              <th>Producto</th>
-              <th>Cantidad de Lotes</th>
-            </tr>
-          </thead>
-          {{#each productos}}
-            <tr>
-              <td>{{codigo}}</td>
-              <td>{{nombre}}</td>
-              {{#if cantidad}}
-                  <td>{{cantidad}}</td>
-              {{else}}
-                  <td>No hay en stock</td>
-              {{/if}}
-            </tr>
-          {{/each}}
-        </table>
+        <div class="card-body">
+          <table class="table text-center table-striped table-hover table-wrapper table-responsive">
+            <thead class="thead-dark">
+              <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Cantidad de Lotes</th>
+                <th>Tipo de Producto</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each productos_norte}}
+              <tr>
+                <td>{{codigo}}</td>
+                <td>{{nombre}}</td>
+                {{#if cantidad}}
+                    <td>{{cantidad}}</td>
+                {{else}}
+                    <td>No hay en stock</td>
+                {{/if}}
+                <td>{{tipo}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-12 mt-3">
       <div class="card-header text-center">
         Tareas del Almacen Norte por Autorizar
       </div>
-        {{#each instrucciones}}
-          <div class="card border-light">
+      <div class="table-wrapper">
+      {{#if instrucciones_norte}}
+        {{#each instrucciones_norte}}
+          <div class="card border-light mt-3">
             <h5 class="card-header text-white bg-primary">{{tipo}}</h5>
             <div class="card-body">
-              <h5 class="card-title">{{producto}}</h5>
+              <h5 class="card-title">{{producto}} - Cantidad: {{cantidad}} Lotes</h5>
               <p class="card-text">{{especificacion}}.</p>
-              <input type="checkbox" class="form-check-input ml-1" id="exampleCheck1">
-              <label class="form-check-label ml-4" for="exampleCheck1">Autorizar</label>
+            </div>
+            <div class="centrar-boton">
+              <form action="/administrador/autorizar/{{id}}" method="POST">
+                <button type="submit" class="btn btn-outline-dark m-2">Autorizar</button>
+              </form>
+              <form action="/administrador/denegar/{{id}}" method="POST">
+                <button type="submit" class="btn btn-outline-dark m-2">Denegar</button>
+              </form>
             </div>
           </div>
         {{/each}}
-        <button class="btn btn-outline-dark">Enviar Autorizaciones</button>
+      {{else}}
+      </div>
+      <h4 class="centrar-boton">No hay tareas pendientes</h4>
+      {{/if}}
     </div>
   </div>
   
-  <div class="row">
-    <div class="col-lg-8 col-md-8 col-sm-12 mt-3">
+  {{!-- Row de los datos del almacen sur --}}
+  <div class="row p-3"> 
+    <div class="col-lg-8 col-md-8 col-sm-12 mt-2">
       <div class="card border-light">
-        <div class="card-header bg-light text-center">
-          <b><h4>Inventario Almacen Sur</h4></b>
+        <div class="card-header text-center">
+          Inventario del Almacen Sur
         </div>
-        <table class="table text-center table-striped table-hover">
-          <thead class="thead-dark">
-            <tr>
-              <th>Código</th>
-              <th>Producto</th>
-              <th>Cantidad de Lotes</th>
-            </tr>
-          </thead>
-          {{#each productos}}
-            <tr>
-              <td>{{codigo}}</td>
-              <td>{{nombre}}</td>
-              {{#if cantidad}}
-                  <td>{{cantidad}}</td>
-              {{else}}
-                  <td>No hay en stock</td>
-              {{/if}}
-            </tr>
-          {{/each}}
-        </table>
+        <div class="card-body">
+          <table class="table text-center table-striped table-hover table-wrapper table-responsive">
+            <thead class="thead-dark">
+              <tr>
+                <th>Codigo</th>
+                <th>Producto</th>
+                <th>Cantidad de Lotes</th>
+                <th>Tipo de Producto</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each productos_sur}}
+              <tr>
+                <td>{{codigo}}</td>
+                <td>{{nombre}}</td>
+                {{#if cantidad}}
+                    <td>{{cantidad}}</td>
+                {{else}}
+                    <td>No hay en stock</td>
+                {{/if}}
+                <td>{{tipo}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-12 mt-3">
+    <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
       <div class="card-header text-center">
         Tareas del Almacen Sur por Autorizar
       </div>
-        {{#each instrucciones}}
-          <div class="card border-light">
+      <div class="table-wrapper">
+      {{#if instrucciones_sur}}
+        {{#each instrucciones_sur}}
+          <div class="card border-light mt-3">
             <h5 class="card-header text-white bg-primary">{{tipo}}</h5>
             <div class="card-body">
-              <h5 class="card-title">{{producto}}</h5>
+              <h5 class="card-title">{{producto}} - Cantidad: {{cantidad}} Lotes</h5>
               <p class="card-text">{{especificacion}}.</p>
-              <input type="checkbox" class="form-check-input ml-1" id="exampleCheck1">
-              <label class="form-check-label ml-4" for="exampleCheck1">Autorizar</label>
+            </div>
+            <div class="centrar-boton">
+              <form action="/administrador/autorizar/{{id}}" method="POST">
+                <button type="submit" class="btn btn-outline-dark m-2">Autorizar</button>
+              </form>
+              <form action="/administrador/denegar/{{id}}" method="POST">
+                <button type="submit" class="btn btn-outline-dark m-2">Denegar</button>
+              </form>
             </div>
           </div>
         {{/each}}
-        <button class="btn btn-outline-dark">Enviar Autorizaciones</button>
-    </div>
+      {{else}}
+      </div>
+      <h4 class="centrar-boton">No hay tareas pendientes</h4>
+      {{/if}}
+    </div>    
   </div>
 
-  <div class="row">
-    <div class="col mt-3">
-      <div class="card border-light">
-        <div class="card-header bg-light text-center">
-          <b>Inventario Almacen Norte</b>
+  {{!-- Row de las tareas registradas --}}
+  <div class="row p-3">
+    <div class="col" style="text-align:center; justify-content: center; position:absolute; width: 89%">
+      <div class="card border-light mb-3" >
+        <div class="card-header text-center">
+          Registro de instrucciones
         </div>
         <div class="card-body">
-          test
+        {{#if instrucciones}}
+          <ul class="list-group list-group-flush"></ul>
+            {{#each instrucciones}}
+              <li class="list-group-item">ID: {{id}} {{tipo}} de {{producto}} por una cantidad de {{cantidad}} unidades - Instrucción: {{estatus}}</li>              
+            {{/each}}
+          </ul>
+        {{else}}
         </div>
+        <h4 class="centrar-boton">No hay instrucciones registradas</h4>
+        {{/if}}
       </div>
     </div>
   </div>

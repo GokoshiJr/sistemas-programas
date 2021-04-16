@@ -36,8 +36,8 @@ router.post("/login", async(req, res) => {
       const test = await pool.query(
         'Select empleados.nombre, empleados.apellido, usuarios.ultima_conexion FROM usuarios, empleados WHERE empleados.empleado_id = ?', [ req.session.user_id ]
       );
-      console.log(test)
-      req.flash("success", `Bienvenido ${test[1].nombre} ${test[1].apellido}, última conexión fue ${test[1].ultima_conexion}`);
+      // console.log(test)
+      req.flash("success", `Bienvenido ${test[1].nombre} ${test[1].apellido}, última conexión fue ${test[0].ultima_conexion}`);
       res.redirect("/administrador");
       await pool.query(
         "UPDATE usuarios SET ultima_conexion = NOW() WHERE usuario_id = ?", [ req.session.user_id ]

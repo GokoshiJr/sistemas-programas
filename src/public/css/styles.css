@@ -8,5 +8,11 @@ nav {
 .table-wrapper {
   max-height: 450px;
   overflow: auto;
-  display:inline-block;
+  display: inline-block;
+}
+
+.centrar-boton {
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
