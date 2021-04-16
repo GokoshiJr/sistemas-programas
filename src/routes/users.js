@@ -9,25 +9,27 @@ router.get("/login", async(req, res) => {
 router.post("/login", async(req, res) => {
 
   const { email, password} = req.body;
-  const errors = [];
   const dato = await pool.query(
     'Select correo, clave, empleado_id from usuarios where correo = ? AND clave = ?', [ email, password ]
   );
   
   if (dato[0] == null) {
-    errors.push('No Coincidencias')
-    res.render('users/login', {errors})
+    req.flash("danger", "Datos invalidos")
+    res.render('users/login',req.session.flash);
   } else {
 
     req.session.user_id = dato[0].empleado_id;
     data =  await pool.query(
       "SELECT cargo_id, almacen_id FROM empleados WHERE empleado_id = ? ", [req.session.user_id]
     );
-
+    const test = await pool.query(
+      'Select empleados.nombre, empleados.apellido, usuarios.ultima_conexion FROM usuarios, empleados WHERE empleados.empleado_id = ?', [ req.session.user_id ]
+    );
     req.session.cargo_id = data[0].cargo_id;
     req.session.almacen_id = data[0].almacen_id;
     req.session.user_logeado = true;
     
+    req.flash("success", `Bienvenido ${test[1].nombre} ${test[1].apellido}, última conexión fue ${test[1].ultima_conexion}`);
     if (req.session.cargo_id === 3) {
       res.redirect("/almacenista");
     } else if (req.session.cargo_id === 2) {
