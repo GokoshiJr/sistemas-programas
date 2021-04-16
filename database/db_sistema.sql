@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:4000
--- Generation Time: Apr 16, 2021 at 04:20 AM
+-- Generation Time: Apr 16, 2021 at 03:31 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.19
 
@@ -90,6 +90,27 @@ INSERT INTO `empleados` (`empleado_id`, `nombre`, `apellido`, `fecha_nacimiento`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `estatusinstrucciones`
+--
+
+CREATE TABLE `estatusinstrucciones` (
+  `estatusinstruccion_id` int(10) UNSIGNED NOT NULL,
+  `nombre` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `estatusinstrucciones`
+--
+
+INSERT INTO `estatusinstrucciones` (`estatusinstruccion_id`, `nombre`) VALUES
+(1, 'Autorizada'),
+(2, 'No Autorizada'),
+(3, 'Realizada'),
+(4, 'No Realizada');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `instrucciones`
 --
 
@@ -99,16 +120,17 @@ CREATE TABLE `instrucciones` (
   `producto_id` int(10) UNSIGNED NOT NULL,
   `cantidad_producto` int(10) UNSIGNED NOT NULL,
   `especificacion` varchar(200) NOT NULL,
-  `almacen_id` int(10) UNSIGNED NOT NULL
+  `almacen_id` int(10) UNSIGNED NOT NULL,
+  `estatusinstruccion_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `instrucciones`
 --
 
-INSERT INTO `instrucciones` (`instruccion_id`, `tipoinstruccion_id`, `producto_id`, `cantidad_producto`, `especificacion`, `almacen_id`) VALUES
-(1, 1, 5, 5, 'Ingresaron 5 kilos de albahaca del mercado municipal', 1),
-(2, 2, 20, 4, 'Ajuste de cafe para el pana Marcel que quiere tomarlo en las mañanas', 2);
+INSERT INTO `instrucciones` (`instruccion_id`, `tipoinstruccion_id`, `producto_id`, `cantidad_producto`, `especificacion`, `almacen_id`, `estatusinstruccion_id`) VALUES
+(1, 1, 5, 5, 'Ingresaron 5 kilos de albahaca del mercado municipal', 1, 1),
+(2, 2, 20, 4, 'Ajuste de cafe para el pana Marcel que quiere tomarlo en las mañanas', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -253,7 +275,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`usuario_id`, `empleado_id`, `correo`, `clave`, `ultima_conexion`) VALUES
-(1, 1, 'julioagonzalez18@gmail.com', '123', '2021-04-16 04:00:01'),
+(1, 1, 'julioagonzalez18@gmail.com', '123', '2021-04-16 15:26:06'),
 (2, 2, 'marcel202101@gmail.com', 'ABC', '2021-04-16 04:01:30');
 
 --
@@ -285,13 +307,20 @@ ALTER TABLE `empleados`
   ADD KEY `empleados_almacenes_fk` (`almacen_id`);
 
 --
+-- Indexes for table `estatusinstrucciones`
+--
+ALTER TABLE `estatusinstrucciones`
+  ADD PRIMARY KEY (`estatusinstruccion_id`);
+
+--
 -- Indexes for table `instrucciones`
 --
 ALTER TABLE `instrucciones`
   ADD PRIMARY KEY (`instruccion_id`),
   ADD KEY `instrucciones_tipoinstrucciones_fk` (`tipoinstruccion_id`),
   ADD KEY `instrucciones_almacenes_fk` (`almacen_id`),
-  ADD KEY `instrucciones_producto_fk` (`producto_id`);
+  ADD KEY `instrucciones_producto_fk` (`producto_id`),
+  ADD KEY `instrucciones_estatusinstrucciones_fk` (`estatusinstruccion_id`);
 
 --
 -- Indexes for table `productos`
@@ -354,6 +383,12 @@ ALTER TABLE `empleados`
   MODIFY `empleado_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `estatusinstrucciones`
+--
+ALTER TABLE `estatusinstrucciones`
+  MODIFY `estatusinstruccion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `instrucciones`
 --
 ALTER TABLE `instrucciones`
@@ -375,7 +410,7 @@ ALTER TABLE `registros`
 -- AUTO_INCREMENT for table `tipoinstrucciones`
 --
 ALTER TABLE `tipoinstrucciones`
-  MODIFY `tipoinstruccion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `tipoinstruccion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tipoproductos`
@@ -405,6 +440,7 @@ ALTER TABLE `empleados`
 --
 ALTER TABLE `instrucciones`
   ADD CONSTRAINT `instrucciones_almacenes_fk` FOREIGN KEY (`almacen_id`) REFERENCES `almacenes` (`almacen_id`),
+  ADD CONSTRAINT `instrucciones_estatusinstrucciones_fk` FOREIGN KEY (`estatusinstruccion_id`) REFERENCES `estatusinstrucciones` (`estatusinstruccion_id`),
   ADD CONSTRAINT `instrucciones_producto_fk` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`producto_id`),
   ADD CONSTRAINT `instrucciones_tipoinstrucciones_fk` FOREIGN KEY (`tipoinstruccion_id`) REFERENCES `tipoinstrucciones` (`tipoinstruccion_id`);
 
