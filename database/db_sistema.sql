@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:4000
--- Generation Time: Apr 15, 2021 at 08:44 PM
+-- Generation Time: Apr 16, 2021 at 04:20 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.19
 
@@ -102,6 +102,14 @@ CREATE TABLE `instrucciones` (
   `almacen_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `instrucciones`
+--
+
+INSERT INTO `instrucciones` (`instruccion_id`, `tipoinstruccion_id`, `producto_id`, `cantidad_producto`, `especificacion`, `almacen_id`) VALUES
+(1, 1, 5, 5, 'Ingresaron 5 kilos de albahaca del mercado municipal', 1),
+(2, 2, 20, 4, 'Ajuste de cafe para el pana Marcel que quiere tomarlo en las mañanas', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -191,7 +199,6 @@ CREATE TABLE `tipoinstrucciones` (
 --
 
 INSERT INTO `tipoinstrucciones` (`tipoinstruccion_id`, `nombre`) VALUES
-(3, 'Ajuste'),
 (1, 'Entrada'),
 (2, 'Salida');
 
@@ -246,8 +253,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`usuario_id`, `empleado_id`, `correo`, `clave`, `ultima_conexion`) VALUES
-(1, 1, 'julioagonzalez18@gmail.com', '123', '2021-04-14 22:22:21'),
-(2, 2, 'marcel202101@gmail.com', 'ABC', '2021-04-15 07:12:25');
+(1, 1, 'julioagonzalez18@gmail.com', '123', '2021-04-16 04:00:01'),
+(2, 2, 'marcel202101@gmail.com', 'ABC', '2021-04-16 04:01:30');
 
 --
 -- Indexes for dumped tables
@@ -350,7 +357,7 @@ ALTER TABLE `empleados`
 -- AUTO_INCREMENT for table `instrucciones`
 --
 ALTER TABLE `instrucciones`
-  MODIFY `instruccion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `instruccion_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `productos`
