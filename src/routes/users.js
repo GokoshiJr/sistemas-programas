@@ -9,14 +9,13 @@ router.get("/login", async(req, res) => {
 router.post("/login", async(req, res) => {
 
   const { email, password} = req.body;
-  const errors = [];
   const dato = await pool.query(
     'Select correo, clave, empleado_id from usuarios where correo = ? AND clave = ?', [ email, password ]
   );
   
   if (dato[0] == null) {
-    errors.push('No Coincidencias')
-    res.render('users/login', {errors})
+    req.flash("danger", "Correo o contrasena erronea")
+    res.render('users/login',req.session.flash);
   } else {
 
     req.session.user_id = dato[0].empleado_id;
