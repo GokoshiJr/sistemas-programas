@@ -3,8 +3,12 @@ const router = express.Router();
 const pool = require("../database");
 
 router.get('/', async(req, res)=>{
+  if (req.session.user_logeado && req.session.cargo_id === 2) {
 
-  if (req.session.user_logeado) {
+    const rutas_home = [  
+      {nombre: "Salir", ruta: "/logout"},
+    ];
+
     const productos = await pool.query("SELECT producto_id, codigo, productos.nombre as producto, cantidad, tipoproductos.nombre as tipoproducto "+
     "FROM productos INNER JOIN tipoproductos ON productos.tipoproducto_id =  tipoproductos.tipoproducto_id "+
     "where almacen_id = ?", [req.session.almacen_id]);
@@ -20,7 +24,7 @@ router.get('/', async(req, res)=>{
      " ON a.almacen_id = empleados.almacen_id where empleado_id = ?",[req.session.user_id]);
     const conexiones = await pool.query("SELECT *  FROM usuarios where empleado_id = ?", [req.session.user_id]);
     
-    res.render('supervisor/supervisor',{productos,instrucciones, empleado,conexiones})
+    res.render('supervisor/supervisor',{rutas_home ,productos,instrucciones, empleado,conexiones})
   } else {
     res.redirect("/home")
   }
