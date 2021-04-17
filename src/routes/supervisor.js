@@ -8,7 +8,9 @@ router.get('/', async(req, res)=>{
     const rutas_home = [  
       {nombre: "Salir", ruta: "/logout"},
     ];
-
+    const rutas_contacto = [
+      {nombre: "github", ruta: "https://github.com/GokoshiJr/sistemas-programas"}
+    ];
     const productos = await pool.query("SELECT producto_id, codigo, productos.nombre as producto, cantidad, tipoproductos.nombre as tipoproducto "+
     "FROM productos INNER JOIN tipoproductos ON productos.tipoproducto_id =  tipoproductos.tipoproducto_id "+
     "where almacen_id = ?", [req.session.almacen_id]);
@@ -24,7 +26,7 @@ router.get('/', async(req, res)=>{
      " ON a.almacen_id = empleados.almacen_id where empleado_id = ?",[req.session.user_id]);
     const conexiones = await pool.query("SELECT *  FROM usuarios where empleado_id = ?", [req.session.user_id]);
     
-    res.render('supervisor/supervisor',{rutas_home ,productos,instrucciones, empleado,conexiones})
+    res.render('supervisor/supervisor',{rutas_home, rutas_contacto ,productos,instrucciones, empleado,conexiones})
   } else {
     res.redirect("/home")
   }
