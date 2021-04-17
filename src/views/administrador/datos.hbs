@@ -1,0 +1,33 @@
+<div class="row">
+ <!-- Imagen y datos del usuario -->
+  <div class="col-lg-8 col-md-10 col-sm-10 m-3 mx-auto" >
+    <div class="card flex-row">
+      <div class="card-header">
+        <img  src="../../public/img/loggeado.png" width="200px" height="200px" class = "rounded my-auto d-block" >
+      </div>
+      <div class="card-body">
+        <div class="card-header text-center">Datos de Usuario</div>
+          <ul class="list-group list-group-flush">
+            {{#each empleado}}
+            <li class="list-group-item">
+              Usuario: {{nombre}} {{apellido}}
+            </li>
+            <li class="list-group-item"> 
+              Fecha de Nacimiento: {{fecha_nacimiento}}
+            </li>
+            <li class="list-group-item"> 
+              Cedula: {{cedula}}
+            </li>
+            <li class="list-group-item"> 
+              Telefono: {{telefono}}
+            </li>
+            <li class="list-group-item"> 
+              Almacen: {{almacen}}
+            </li>
+            {{/each}}
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>
+      

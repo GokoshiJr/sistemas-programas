@@ -2,7 +2,7 @@
   
   {{!-- Row de los datos del almacen Norte --}}
   <div class="row m-1"> 
-    <div class="col-lg-8 col-md-8 col-sm-12 mt-3">
+    <div class="col-lg-8 col-md-12 col-sm-12 mt-3">
       <div class="card border-light">
         <div class="card-header text-center">
           Inventario del Almacen Norte
@@ -35,9 +35,9 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-12 mt-3">
+    <div class="col-lg-4 col-md-12 col-sm-12 mt-3">
       <div class="card-header text-center">
-        Tareas del Almacen Norte por Autorizar
+        Instrucciones del Almacen Norte por Autorizar
       </div>
       <div class="table-wrapper">
       {{#if instrucciones_norte}}
@@ -45,7 +45,8 @@
           <div class="card border-light mt-3">
             <h5 class="card-header text-white bg-primary">{{tipo}}</h5>
             <div class="card-body">
-              <h5 class="card-title">{{producto}} - Cantidad: {{cantidad}} Lotes</h5>
+              <h5 class="card-title">Producto: {{producto}}.</h5>
+              <h5 class="card-title">Cantidad: {{cantidad}} Lotes.</h5>
               <p class="card-text">{{especificacion}}.</p>
             </div>
             <div class="centrar-boton">
@@ -60,14 +61,14 @@
         {{/each}}
       {{else}}
       </div>
-      <h4 class="centrar-boton">No hay tareas pendientes</h4>
+      <h5 class="centrar-boton" style="font-size: 110%;">No hay instrucciones pendientes</h5>
       {{/if}}
     </div>
   </div>
   
   {{!-- Row de los datos del almacen sur --}}
   <div class="row p-3"> 
-    <div class="col-lg-8 col-md-8 col-sm-12 mt-2">
+    <div class="col-lg-8 col-md-12 col-sm-12 mt-2">
       <div class="card border-light">
         <div class="card-header text-center">
           Inventario del Almacen Sur
@@ -100,9 +101,9 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
+    <div class="col-lg-4 col-md-12 col-sm-12 mt-2">
       <div class="card-header text-center">
-        Tareas del Almacen Sur por Autorizar
+        Instrucciones del Almacen Sur por Autorizar
       </div>
       <div class="table-wrapper">
       {{#if instrucciones_sur}}
@@ -110,7 +111,8 @@
           <div class="card border-light mt-3">
             <h5 class="card-header text-white bg-primary">{{tipo}}</h5>
             <div class="card-body">
-              <h5 class="card-title">{{producto}} - Cantidad: {{cantidad}} Lotes</h5>
+              <h5 class="card-title">Producto: {{producto}}.</h5>
+              <h5 class="card-title">Cantidad: {{cantidad}} Lotes.</h5>
               <p class="card-text">{{especificacion}}.</p>
             </div>
             <div class="centrar-boton">
@@ -125,14 +127,14 @@
         {{/each}}
       {{else}}
       </div>
-      <h4 class="centrar-boton">No hay tareas pendientes</h4>
+      <h5 class="centrar-boton" style="font-size: 110%;">No hay instrucciones pendientes</h5>
       {{/if}}
     </div>    
   </div>
 
   {{!-- Row de las tareas registradas --}}
   <div class="row p-3">
-    <div class="col" style="text-align:center; justify-content: center; position:absolute; width: 89%">
+    <div class="col mx-auto">
       <div class="card border-light mb-3" >
         <div class="card-header text-center">
           Registro de instrucciones
@@ -141,7 +143,7 @@
         {{#if instrucciones}}
           <ul class="list-group list-group-flush"></ul>
             {{#each instrucciones}}
-              <li class="list-group-item">ID: {{id}} {{tipo}} de {{producto}} por una cantidad de {{cantidad}} unidades - Instrucción: {{estatus}}</li>              
+              <li class="list-group-item">ID: {{id}} {{tipo}} de {{producto}} por una cantidad de {{cantidad}} lote(s) - Instrucción: {{estatus}} en Almacen {{almacen}}.</li>              
             {{/each}}
           </ul>
         {{else}}

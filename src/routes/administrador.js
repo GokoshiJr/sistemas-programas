@@ -7,8 +7,9 @@ router.get('/', async (req, res) => {
 
   if (req.session.user_logeado === true && req.session.cargo_id === 1) {
 
-    const rutas_home = [  
-      {nombre: "Salir", ruta: "/logout"},
+    const rutas_home = [
+      {nombre: "Datos Personales", ruta: "/administrador/datos"},
+      {nombre: "Salir", ruta: "/logout"}
     ];
 
     const rutas_contacto = [
@@ -65,10 +66,11 @@ router.get('/', async (req, res) => {
     );
 
     const instrucciones = await pool.query(
-      "SELECT instruccion_id AS id, estatusinstrucciones.nombre AS estatus, cantidad_producto AS cantidad, tipoinstrucciones.nombre AS tipo, productos.nombre AS producto FROM (((instrucciones "+
+      "SELECT almacenes.sector AS almacen, instruccion_id AS id, estatusinstrucciones.nombre AS estatus, cantidad_producto AS cantidad, tipoinstrucciones.nombre AS tipo, productos.nombre AS producto FROM ((((instrucciones "+
       "INNER JOIN productos ON instrucciones.producto_id = productos.producto_id) "+
       "INNER JOIN tipoinstrucciones ON instrucciones.tipoinstruccion_id = tipoinstrucciones.tipoinstruccion_id) "+
-      "INNER JOIN estatusinstrucciones ON instrucciones.estatusinstruccion_id = estatusinstrucciones.estatusinstruccion_id) WHERE instrucciones.estatusinstruccion_id <> 5;"
+      "INNER JOIN estatusinstrucciones ON instrucciones.estatusinstruccion_id = estatusinstrucciones.estatusinstruccion_id) "+
+      "INNER JOIN almacenes ON instrucciones.almacen_id = almacenes.almacen_id) WHERE instrucciones.estatusinstruccion_id <> 5;"
     );
     
     res.render("administrador/request", { rutas_home, rutas_contacto, productos_norte, productos_sur, instrucciones_norte, instrucciones_sur, instrucciones });
@@ -82,9 +84,9 @@ router.get('/', async (req, res) => {
 router.post("/autorizar/:id", async(req, res) => {
   if (req.session.user_logeado === true && req.session.cargo_id === 1) {
     await pool.query(
-      "UPDATE instrucciones SET estatusinstruccion_id = 1 WHERE instruccion_id = ?", [req.params.id]
+      "UPDATE instrucciones SET estatusinstruccion_id = 1 WHERE instruccion_id = ?", [ req.params.id ]
     );
-    req.flash("success", "Tarea autorizada con éxito");
+    req.flash("success", "Instrucción autorizada con éxito");
   }
   res.redirect("/administrador");
 });
@@ -92,11 +94,23 @@ router.post("/autorizar/:id", async(req, res) => {
 router.post("/denegar/:id", async(req, res) => { 
   if (req.session.user_logeado === true && req.session.cargo_id === 1) {
     await pool.query(
-      "UPDATE instrucciones SET estatusinstruccion_id = 2 WHERE instruccion_id = ?", [req.params.id]
+      "UPDATE instrucciones SET estatusinstruccion_id = 2 WHERE instruccion_id = ?", [ req.params.id ]
     );
-    req.flash("success", "Tarea denegada con éxito");
+    req.flash("success", "Instrucción denegada con éxito");
   }
   res.redirect("/administrador");
 });
+
+router.get("/datos", async(req, res) => {
+  if (req.session.user_logeado === true && req.session.cargo_id === 1) {
+    const rutas_home = [
+      {nombre: "Regresar", ruta: "/administrador"},
+      {nombre: "Salir", ruta: "/logout"}
+    ];
+    const empleado = await pool.query("SELECT nombre, apellido, fecha_nacimiento ,cedula ,telefono, a.sector as almacen FROM empleados INNER JOIN almacenes as a"+
+     " ON a.almacen_id = empleados.almacen_id where empleado_id = ?",[ req.session.user_id ]);
+    res.render("administrador/datos", { empleado, rutas_home });
+  }
+})
 
 module.exports = router;

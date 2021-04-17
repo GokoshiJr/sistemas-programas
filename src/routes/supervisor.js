@@ -6,7 +6,8 @@ router.get('/', async(req, res)=>{
   if (req.session.user_logeado && req.session.cargo_id === 2) {
 
     const rutas_home = [  
-      {nombre: "Salir", ruta: "/logout"},
+      {nombre: "Agregar Usuarios", ruta: "/users/request"},
+      {nombre: "Salir", ruta: "/logout"}
     ];
     const rutas_contacto = [
       {nombre: "github", ruta: "https://github.com/GokoshiJr/sistemas-programas"}
@@ -32,13 +33,13 @@ router.get('/', async(req, res)=>{
   }
 });
 
-router.post('/',(req,res)=>{
-  const data = req.body;
+router.post('/', (req, res) => {
+  if (req.session.user_logeado && req.session.cargo_id === 2) { 
+    const data = req.body;
+    pool.query("INSERT INTO instrucciones values(NULL,?,?,?,?,?,5)",[parseInt(data.tipoinstruccion_id),parseInt(data.producto_id), parseInt(data.cant), data.espec, req.session.almacen_id]);
+    req.flash("success", "Intruccion enviada satisfactoriamente");
+  }
+  res.redirect("/supervisor");
+});
 
-  pool.query("INSERT INTO instrucciones values(NULL,?,?,?,?,?,5)",[parseInt(data.tipoinstruccion_id),
-  parseInt(data.producto_id), parseInt(data.cant), data.espec, req.session.almacen_id]);
-  
-  req.flash('success', "Intruccion enviada satisfactoriamente")
-  res.redirect('/supervisor')
-})
 module.exports = router;
