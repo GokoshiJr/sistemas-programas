@@ -3,7 +3,12 @@ const router = express.Router();
 const pool = require("../database");
 
 router.get("/login", async(req, res) => {
-  res.render("users/login");
+  
+  const rutas_contacto = [
+    {nombre: "github", ruta: "https://github.com/GokoshiJr/sistemas-programas"}
+  ];
+
+  res.render("users/login",{rutas_contacto });
 });
 
 router.post("/login", async(req, res) => {
