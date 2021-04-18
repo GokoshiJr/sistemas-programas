@@ -45,29 +45,49 @@ router.get('/', async (req, res) => {
     });
 
     const instrucciones = await pool.query(
-      "SELECT almacenes.sector AS almacen, instruccion_id AS id, estatusinstrucciones.nombre AS estatus, cantidad_producto AS cantidad, tipoinstrucciones.nombre AS tipo, productos.nombre AS producto, especificacion FROM ((((instrucciones "+
+      "SELECT almacenes.sector AS almacen, instruccion_id AS id, estatusinstrucciones.nombre AS estatus, cantidad_producto AS cantidad, tipoinstrucciones.nombre AS tipo,tipoinstrucciones.tipoinstruccion_id AS tipo_id, productos.nombre AS producto, productos.codigo AS codigo, especificacion FROM ((((instrucciones "+
       "INNER JOIN productos ON instrucciones.producto_id = productos.producto_id) "+
       "INNER JOIN tipoinstrucciones ON instrucciones.tipoinstruccion_id = tipoinstrucciones.tipoinstruccion_id) "+
       "INNER JOIN estatusinstrucciones ON instrucciones.estatusinstruccion_id = estatusinstrucciones.estatusinstruccion_id) "+
       "INNER JOIN almacenes ON instrucciones.almacen_id = almacenes.almacen_id) WHERE (instrucciones.estatusinstruccion_id = 1 AND almacenes.almacen_id = ?);", [ almacen_id ]
     );
-
-    res.render("almacenista/request", { rutas_home, rutas_contacto, empleado, productos, instrucciones });
+    const flash = req.session.flash
+    res.render("almacenista/request", { rutas_home, rutas_contacto, empleado, productos, instrucciones,flash });
   } else {
     res.redirect("/home");
   }
 
 });
 
-router.post('/:id', async (req, res) => {
+router.post('/:id/:codigo', async (req, res) => {
 
   if (req.session.user_logeado === true && req.session.cargo_id === 3) {
     let instruccion_id = req.params.id;
-    /*
-
-      Aqui va la logica para marcar la instruccion como ejecutada
+    let codigo = req.params.codigo;
+    let cant_update;
+    const {tipo_id,cant} = req.body;
     
-    */
+    const total_product = await pool.query("SELECT cantidad from productos where codigo = ?", [codigo])
+
+    if(parseInt(tipo_id) == 2){
+      if(total_product[0].cantidad > cant){
+        cant_update = total_product[0].cantidad - parseInt(cant);
+        await pool.query('UPDATE instrucciones SET estatusinstruccion_id = 6 where instruccion_id = ?',[instruccion_id]);
+        await pool.query('UPDATE productos SET cantidad = ? WHERE codigo = ?', [cant_update,codigo]);
+        req.flash("success","Operacion Satisfactorial");
+        res.redirect('/home');
+      }else{
+        req.flash("danger","No hay suficientes lotes en Stock para realizar esta Accion");
+        res.redirect('/home');
+      }
+    }else{
+      cant_update = total_product[0].cantidad + parseInt(cant);
+      await pool.query('UPDATE instrucciones SET estatusinstruccion_id = 6 where instruccion_id = ?',[instruccion_id]);
+      await pool.query('UPDATE productos SET cantidad = ? WHERE codigo = ?', [cant_update,codigo]);
+      req.flash("success","Operacion Satisfactorial");
+      res.redirect('/home');
+    }
+    
   } else {
     res.redirect("/home");
   }
