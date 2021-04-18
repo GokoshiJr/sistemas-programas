@@ -94,8 +94,8 @@ router.post("/create", async(req, res) => {
   if (req.session.user_logeado && req.session.cargo_id === 2) {
     const { correo, clave, empleado_id } = req.body;
     await pool.query(
-      "INSERT INTO usuarios (empleado_id, correo, clave, fecha_registro, ultima_conexion, estatus_id) " +
-      "VALUES (?, ?, ?, ?, ?, ?);", [empleado_id, correo, clave, new Date(), new Date(), 1]
+      "INSERT INTO usuarios " +
+      "VALUES (NULL,?, ?, ?, ?);", [empleado_id, correo, clave, new Date()]
     );
     res.redirect("/users");
   } else {
