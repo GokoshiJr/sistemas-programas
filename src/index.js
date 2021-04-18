@@ -46,7 +46,7 @@ app.use((req, res, next) => {
     res, toma lo que el servidor quiere responder
     next, una funcion para continuar con el resto del codigo
   */
- app.locals.success = req.flash("success"); // mensaje success "alert"
+  app.locals.success = req.flash("success"); // mensaje success "alert"
   app.locals.danger = req.flash("danger");
   next();
 });
@@ -57,6 +57,7 @@ app.use("/logout", require("./routes/logout"));
 app.use("/users", require("./routes/users"));
 app.use("/administrador", require("./routes/administrador"));
 app.use("/supervisor", require("./routes/supervisor"));
+app.use("/almacenista", require("./routes/almacenista"));
 
 // public - para usar archivos estaticos
 app.use("/public", express.static(path.join(__dirname, "public")));
