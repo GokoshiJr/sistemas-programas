@@ -69,6 +69,7 @@
         <div class="table-wrapper">
           {{#if instrucciones}}
             {{#each instrucciones}}
+            <form action="/almacenista/{{id}}/{{codigo}}" method="POST">
               <div class="card border-light mt-3">
                 <h5 class="card-header text-white bg-primary">{{tipo}}</h5>
                 <div class="card-body">
@@ -76,11 +77,13 @@
                   <h5 class="card-title">Cantidad: {{cantidad}} Lotes.</h5>
                   <p class="card-text">{{especificacion}}.</p>
                 </div>
+
+                <input type="hidden" name = "tipo_id" value = "{{tipo_id}}">
+                <input type="hidden" name = "cant" value="{{cantidad}}">
                 <div class="centrar-boton">
-                  <form action="/almacenista/{{id}}" method="POST">
                     <button type="submit" class="btn btn-outline-dark m-2">Aplicar Instrucción a Inventario</button>
-                  </form>
                 </div>
+                </form>
               </div>
             {{/each}}
           {{else}}
