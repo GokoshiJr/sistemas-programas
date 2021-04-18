@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
       {nombre: "twitter", ruta: "https://twitter.com/GokoshiJr"},
       {nombre: "github", ruta: "https://github.com/GokoshiJr/sistemas-programas"}
     ];
+
     const empleado = await pool.query(
       "SELECT nombre, apellido, fecha_nacimiento, cedula, telefono, a.sector AS almacen FROM empleados INNER JOIN almacenes AS a "+
       "ON a.almacen_id = empleados.almacen_id where empleado_id = ?", [req.session.user_id]
@@ -37,6 +38,7 @@ router.get('/', async (req, res) => {
         producto.codigo = value;
       });
     });
+
     productos.forEach(producto => {      
       tipo = helpers.tipo_productos(producto.nombre)
       tipo.then((value) => {        
@@ -51,45 +53,57 @@ router.get('/', async (req, res) => {
       "INNER JOIN estatusinstrucciones ON instrucciones.estatusinstruccion_id = estatusinstrucciones.estatusinstruccion_id) "+
       "INNER JOIN almacenes ON instrucciones.almacen_id = almacenes.almacen_id) WHERE (instrucciones.estatusinstruccion_id = 1 AND almacenes.almacen_id = ?);", [ almacen_id ]
     );
-    const flash = req.session.flash
-    res.render("almacenista/request", { rutas_home, rutas_contacto, empleado, productos, instrucciones,flash });
-  } else {
-    res.redirect("/home");
-  }
+    
+    res.render("almacenista/request", { rutas_home, rutas_contacto, empleado, productos, instrucciones });
 
+  } else {
+
+    res.redirect("/home");
+
+  }
 });
 
-router.post('/:id/:codigo', async (req, res) => {
+router.post("/:id/:codigo", async (req, res) => {
 
   if (req.session.user_logeado === true && req.session.cargo_id === 3) {
+
     let instruccion_id = req.params.id;
     let codigo = req.params.codigo;
     let cant_update;
-    const {tipo_id,cant} = req.body;
-    
-    const total_product = await pool.query("SELECT cantidad from productos where codigo = ?", [codigo])
+    const { tipo_id, cant} = req.body;
+    const total_product = await pool.query("SELECT cantidad from productos where codigo = ?", [codigo]);
 
-    if(parseInt(tipo_id) == 2){
-      if(total_product[0].cantidad > cant){
+    if (parseInt(tipo_id) == 2) {
+
+      /* Tipo de instruccion_id = 2 (Salida de productos)*/
+
+      if (total_product[0].cantidad > cant) {
         cant_update = total_product[0].cantidad - parseInt(cant);
-        await pool.query('UPDATE instrucciones SET estatusinstruccion_id = 6 where instruccion_id = ?',[instruccion_id]);
-        await pool.query('UPDATE productos SET cantidad = ? WHERE codigo = ?', [cant_update,codigo]);
-        req.flash("success","Operacion Satisfactorial");
-        res.redirect('/home');
-      }else{
-        req.flash("danger","No hay suficientes lotes en Stock para realizar esta Accion");
-        res.redirect('/home');
+        await pool.query("UPDATE instrucciones SET estatusinstruccion_id = 6 where instruccion_id = ?", [instruccion_id]);
+        await pool.query("UPDATE productos SET cantidad = ? WHERE codigo = ?", [cant_update,codigo]);
+        req.flash("success", "Operación Satisfactoria");
+      } else {
+        /* Los productos a salir superan a los que estan en el stock */        
+        req.flash("danger", "No hay suficientes lotes en Stock para realizar esta Accion");
       }
-    }else{
+
+    } else {
+
+      /* Tipo de instruccion_id = 1 (Entrada de productos)*/
+
       cant_update = total_product[0].cantidad + parseInt(cant);
-      await pool.query('UPDATE instrucciones SET estatusinstruccion_id = 6 where instruccion_id = ?',[instruccion_id]);
-      await pool.query('UPDATE productos SET cantidad = ? WHERE codigo = ?', [cant_update,codigo]);
-      req.flash("success","Operacion Satisfactorial");
-      res.redirect('/home');
+      await pool.query("UPDATE instrucciones SET estatusinstruccion_id = 6 where instruccion_id = ?", [instruccion_id]);
+      await pool.query("UPDATE productos SET cantidad = ? WHERE codigo = ?", [cant_update, codigo]);
+      req.flash("success", "Operación Satisfactoria");
+
     }
-    
+
+    res.redirect("/almacenista");
+
   } else {
+
     res.redirect("/home");
+
   }
 
 });
