@@ -77,7 +77,7 @@ router.post("/:id/:codigo", async (req, res) => {
 
       /* Tipo de instruccion_id = 2 (Salida de productos)*/
 
-      if (total_product[0].cantidad > cant) {
+      if (total_product[0].cantidad >= cant) {
         cant_update = total_product[0].cantidad - parseInt(cant);
         await pool.query("UPDATE instrucciones SET estatusinstruccion_id = 6 where instruccion_id = ?", [instruccion_id]);
         await pool.query("UPDATE productos SET cantidad = ? WHERE codigo = ?", [cant_update,codigo]);
